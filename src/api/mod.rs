@@ -1,4 +1,4 @@
-use crate::types::Result;
+use crate::types::{ErrorResponse, Result};
 use actix_web::HttpResponse;
 use serde::Serialize;
 use serde_json::json;
@@ -15,6 +15,6 @@ where
             .json(v),
         Err(e) => HttpResponse::InternalServerError()
             .content_type(mime::APPLICATION_JSON)
-            .json(json!({})),
+            .json(ErrorResponse::from(e)),
     }
 }
