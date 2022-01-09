@@ -10,7 +10,6 @@ use web3::Web3;
 
 pub mod api;
 
-pub mod base;
 pub mod types;
 pub mod utils;
 

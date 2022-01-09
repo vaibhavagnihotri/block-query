@@ -1,18 +1,16 @@
 use crate::api::http_response;
-use actix_web::{HttpResponse, Responder};
-use web3::api::Eth;
-use web3::transports::WebSocket;
-use web3::types::{BlockId, BlockNumber, H2048, H256};
-
-use crate::base::Result;
-use crate::types::{BlockInput, BlockResponse};
+use crate::types::{BlockInput, BlockResponse, Result};
 use crate::utils::get_block_id;
 use actix_web::get;
 use actix_web::web;
+use actix_web::{HttpResponse, Responder};
 use futures::future;
 use serde::Serialize;
 use std::collections::HashMap;
+use web3::api::Eth;
+use web3::transports::WebSocket;
 use web3::types::U64;
+use web3::types::{BlockId, BlockNumber, H2048, H256};
 
 #[get("/api/block")]
 pub async fn get(input: web::Query<BlockInput>) -> impl Responder {

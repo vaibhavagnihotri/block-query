@@ -1,4 +1,4 @@
-use crate::base::Result;
+use crate::types::Result;
 use actix_web::HttpResponse;
 use serde::Serialize;
 use serde_json::json;
