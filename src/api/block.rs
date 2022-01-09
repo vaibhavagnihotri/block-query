@@ -6,6 +6,7 @@ use actix_web::get;
 use actix_web::web;
 use actix_web::{HttpResponse, Responder};
 use futures::future;
+use log::{debug, info};
 use serde::Serialize;
 use std::collections::HashMap;
 use web3::api::Eth;
@@ -15,23 +16,25 @@ use web3::types::{BlockId, BlockNumber, H2048, H256};
 
 #[get("/api/block")]
 pub async fn get(input: web::Query<BlockInput>) -> impl Responder {
-    http_response(get_latest_blocks(input.limit.unwrap_or(10)).await)
+    let limit: u32 = input.limit.unwrap_or(10);
+    debug!("Executing GET request for limit {}", limit);
+    http_response(get_latest_blocks(limit).await)
 }
 
 async fn get_latest_blocks(limit: u32) -> Result<BlockResponse> {
     if limit == 0 {
+        info!("Asked Limit is ZERO returning EMPTY response");
         return Ok(BlockResponse::new());
     }
 
     //Get latest block
     let latest_block: Option<web3::types::Block<H256>> = get_block(None).await?;
 
-    println!("COMES");
-
     let mut response = BlockResponse::new();
 
     match latest_block {
         Some(v) => {
+            debug!("Latest block fetched {:?}", v.number);
             response.add(&v);
             if let Some(number) = v.number {
                 let mut handlers = vec![];
@@ -44,6 +47,7 @@ async fn get_latest_blocks(limit: u32) -> Result<BlockResponse> {
                     match result {
                         Ok(v) => match v {
                             Some(block) => {
+                                debug!("Block fetched {:?}", block.number);
                                 response.add(&block);
                             }
                             None => {}
@@ -72,7 +76,7 @@ async fn get_block(block_number: Option<U64>) -> web3::Result<Option<web3::types
         SETTINGS.infuria_key
     ))
     .await?;
-    println!("block {:?}", block_number);
+    info!("Request for block_number - {:?}", block_number);
     let eth_client = web3::Web3::new(websocket).eth();
 
     eth_client.block(get_block_id(block_number)).await

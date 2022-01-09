@@ -1,4 +1,5 @@
 use actix_web::{get, web, App, HttpServer, Responder, ResponseError};
+use log::debug;
 use std::env;
 use std::result::Result;
 use std::str::FromStr;
@@ -17,8 +18,8 @@ use settings::SETTINGS;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("Settings Loaded - {:?}", *SETTINGS);
-
+    env_logger::init();
+    debug!("Settings Loaded - {:?}", *SETTINGS);
     HttpServer::new(|| App::new().service(api::block::get))
         .bind("127.0.0.1:8080")?
         .run()
