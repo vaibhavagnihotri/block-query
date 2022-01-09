@@ -1,4 +1,5 @@
 use crate::api::http_response;
+use crate::settings::SETTINGS;
 use crate::types::{BlockInput, BlockResponse, Result};
 use crate::utils::get_block_id;
 use actix_web::get;
@@ -66,9 +67,10 @@ async fn get_latest_blocks(limit: u32) -> Result<BlockResponse> {
 }
 
 async fn get_block(block_number: Option<U64>) -> web3::Result<Option<web3::types::Block<H256>>> {
-    let websocket = web3::transports::WebSocket::new(
-        "wss://mainnet.infura.io/ws/v3/7d20d175e75f4d54b085fd8590d7e72c",
-    )
+    let websocket = web3::transports::WebSocket::new(&format!(
+        "wss://mainnet.infura.io/ws/v3/{}",
+        SETTINGS.infuria_key
+    ))
     .await?;
     println!("block {:?}", block_number);
     let eth_client = web3::Web3::new(websocket).eth();

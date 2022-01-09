@@ -9,12 +9,16 @@ use web3::types::{Block, BlockId, BlockNumber, H160, H256, U256};
 use web3::Web3;
 
 pub mod api;
-
+pub mod settings;
 pub mod types;
 pub mod utils;
 
+use settings::SETTINGS;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("Settings Loaded - {:?}", *SETTINGS);
+
     HttpServer::new(|| App::new().service(api::block::get))
         .bind("127.0.0.1:8080")?
         .run()

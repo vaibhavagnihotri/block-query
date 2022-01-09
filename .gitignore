@@ -4,3 +4,6 @@
 # IDE Files
 .idea
 *.iml
+
+# Local Settings File
+conf/settings.yaml
