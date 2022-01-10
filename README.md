@@ -4,7 +4,7 @@
 
 This provides an implementation of querying Ethereum Blocks given the infuria account key. It uses web3 as RPC client and actix-web as API framework. Tokio runtime is used for execution of parallel fetch of blocks.   
 
-##How to setup
+## How to setup
 * Clone the repo
 * Create `conf/settings.yaml` with desired value of `infuria_key` 
 
@@ -27,7 +27,7 @@ Here we're setting `ulimit` as `10100` because application keeps parallel socket
 * Application consists of only one GET API `/api/block` which takes an optional query param `limit` as input defaulting to `10000`
 * API returns block information in reverse order `(latest → latest - limit)`
 
-####Fetching Latest 100 Blocks --
+#### Fetching Latest 100 Blocks --
 
 ``curl --location --request GET 'http://127.0.0.1:8080/api/block?limit=100'``
 
