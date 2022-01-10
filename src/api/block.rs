@@ -16,7 +16,7 @@ use web3::types::{BlockId, BlockNumber, H2048, H256};
 
 #[get("/api/block")]
 pub async fn get(input: web::Query<BlockInput>) -> impl Responder {
-    let limit: u32 = input.limit.unwrap_or(10);
+    let limit: u32 = input.limit.unwrap_or(10000);
     debug!("Executing GET request for limit {}", limit);
     http_response(get_latest_blocks(limit).await)
 }
